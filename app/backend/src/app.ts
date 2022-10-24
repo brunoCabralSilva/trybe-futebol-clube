@@ -1,13 +1,13 @@
 import * as express from 'express';
+import login from './routes/login';
 
 class App {
   public app: express.Express;
 
   constructor() {
     this.app = express();
-
     this.config();
-
+    this.app.use('/login', login);
     // Não remover essa rota
     this.app.get('/', (req, res) => res.json({ ok: true }));
   }
