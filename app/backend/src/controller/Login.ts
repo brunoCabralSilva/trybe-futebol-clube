@@ -1,18 +1,17 @@
 import { Request, Response } from 'express';
-// import Service from '../service/Login';
+import Service from '../service/Login';
 
 export default class Login {
-  // service: Service;
+  service: Service;
 
-  // construtor() {
-  //   this.service = new Service();
-  // }
+  constructor() {
+    this.service = new Service();
+  }
 
-  findByEmailAndPassword = async (req: Request, res: Response) => {
-    return res.status(200).json({ message: req.body });
-    // const findBy = await this.service.findByEmailAndPassword(req.body);
-    // if (findBy === null) {
-    //   return res.status(200).json({ message: 'inexistente' });
-    // } return res.status(200).json({ message: 'existente' });
+  public findUser = async (req: Request, res: Response) => {
+    const findBy = await this.service.findUser(req.body);
+    if (findBy) {
+      return res.status(200).json({ token: findBy });
+    } return res.status(400).json({ message: 'User not found' });
   };
 }

@@ -5,6 +5,6 @@ const router = express.Router();
 
 const loginControl = new LoginController();
 
-router.post('/', loginControl.findByEmailAndPassword);
+router.post('/', loginControl.findUser);
 
 export default router;
