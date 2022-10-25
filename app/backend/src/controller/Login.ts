@@ -12,6 +12,6 @@ export default class Login {
     const findBy = await this.service.findUser(req.body);
     if (findBy) {
       return res.status(200).json({ token: findBy });
-    } return res.status(400).json({ message: 'User not found' });
+    } return res.status(401).json({ message: 'Incorrect email or password' });
   };
 }

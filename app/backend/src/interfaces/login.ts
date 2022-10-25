@@ -1,12 +1,12 @@
+export interface LoginInterface {
+  email: string,
+  password: string,
+}
+
 export interface LoginAuthenticate {
-    id: number,
-    username: string,
-    role: string,
-    email: string,
-    password: string,
-  }
-  
-  export interface JwtConfig {
-    expiresIn: string,
-    algorithm: string,
-  };
+  id: number,
+  username: string,
+  role: string,
+  email: string,
+  password: string,
+}

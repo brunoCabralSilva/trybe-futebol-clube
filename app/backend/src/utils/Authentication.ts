@@ -1,18 +1,14 @@
-const jwt = require('jsonwebtoken');
-import { JwtConfig, LoginAuthenticate } from '../interfaces/login';
+import jwt = require('jsonwebtoken');
+
+import { LoginAuthenticate } from '../interfaces/login';
 
 export default class Authentication {
-  jwtConfig: JwtConfig;
   payload: LoginAuthenticate;
   tokenSecret: string;
   token: string;
 
   constructor() {
     this.tokenSecret = process.env.JWT_SECRET || 'jwt_secret';
-    this.jwtConfig = {
-      expiresIn: '1000min',
-      algorithm: 'HS256',
-    };
   }
 
   public generateTolkien = (body: LoginAuthenticate): string => {
@@ -20,18 +16,17 @@ export default class Authentication {
     this.token = jwt.sign(
       { id, username, role, email },
       this.tokenSecret,
-      this.jwtConfig
+      { expiresIn: '1000min', algorithm: 'HS256' },
     );
     return this.token;
   };
 
-  public verify = (token: string): string | boolean => {
+  public verify = (token: string): string | jwt.JwtPayload | boolean => {
     try {
-    const validate = jwt.verify(token, this.tokenSecret);
-    return validate;
+      const validate = jwt.verify(token, this.tokenSecret);
+      return validate;
     } catch (error) {
       return false;
     }
-  }
-};
-
+  };
+}
