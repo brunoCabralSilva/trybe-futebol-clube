@@ -14,5 +14,6 @@ router.post(
   loginMiddleware.passwordValidate,
   loginControl.findUser,
 );
+router.get('/validate', loginControl.validate);
 
 export default router;

@@ -1,5 +1,4 @@
 import jwt = require('jsonwebtoken');
-
 import { LoginAuthenticate } from '../interfaces/login';
 
 export default class Authentication {
@@ -21,12 +20,13 @@ export default class Authentication {
     return this.token;
   };
 
-  public verify = (token: string): string | jwt.JwtPayload | boolean => {
+  public verify = (token: string): boolean | string | jwt.JwtPayload => {
     try {
-      const validate = jwt.verify(token, this.tokenSecret);
+      const validate: string | jwt.JwtPayload = jwt.verify(token, this.tokenSecret);
       return validate;
     } catch (error) {
       return false;
     }
   };
-}
+};
+
