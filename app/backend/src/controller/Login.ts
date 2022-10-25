@@ -24,5 +24,5 @@ export default class Login {
       const validation = this.authenticate.verify(authorization);
       if (validation) return res.status(200).json({ role: validation });
     }
-  }
+  };
 }

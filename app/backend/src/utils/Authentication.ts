@@ -28,5 +28,4 @@ export default class Authentication {
       return false;
     }
   };
-};
-
+}
