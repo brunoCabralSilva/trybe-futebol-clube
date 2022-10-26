@@ -14,7 +14,6 @@ export default class Teams {
   };
 
   getOne = async (req: Request, res: Response) => {
-    console.log(req.body.id);
     const getOne = await this.service.getOne(req.params.id);
     if (getOne) {
       return res.status(200).json(getOne);
