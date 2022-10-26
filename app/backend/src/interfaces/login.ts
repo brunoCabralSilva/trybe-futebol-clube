@@ -10,3 +10,10 @@ export interface LoginAuthenticate {
   email: string,
   password: string,
 }
+
+export interface TokenDecode {
+  id: number,
+  username: string,
+  role: string,
+  email: string,
+}
