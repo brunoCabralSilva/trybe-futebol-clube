@@ -59,4 +59,42 @@ export default class Matches {
     const valor = this.returnList(query);
     return valor;
   };
+
+  insertMatchInProgress = async (body: any) => {
+    const { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals } = body;
+    const home = await this.getById(homeTeam);
+    const away = await this.getById(awayTeam);
+    if (!home || !away) {
+      return null;
+    }
+
+    const query: any = await MatchesModel.create({
+      homeTeam,
+      awayTeam,
+      homeTeamGoals,
+      awayTeamGoals,
+      inProgress: true,
+    });
+    return query.dataValues;
+  };
+
+  finishMatch = async (id: string) => {
+    const idQuery = Number(id);
+    await MatchesModel.update({ inProgress: false }, {
+      where: { id: idQuery },
+    });
+    return 'Finished';
+  };
+
+  updateMatch = async (id: string, params: any) => {
+    const { homeTeamGoals, awayTeamGoals } = params;
+    const idNumber = Number(id);
+    await MatchesModel.update({
+      homeTeamGoals,
+      awayTeamGoals,
+    }, {
+      where: { id: idNumber },
+    });
+    return 'Match Updated!';
+  };
 }

@@ -21,4 +21,21 @@ export default class Matches {
       return res.status(200).json(getAllMatches);
     } return res.status(400).json({ message: 'Not Found' });
   };
+
+  insertMatchInProgress = async (req: Request, res: Response) => {
+    const insert = await this.service.insertMatchInProgress(req.body);
+    if (insert) {
+      return res.status(201).json(insert);
+    } return res.status(404).json({ message: 'There is no team with such id!' });
+  };
+
+  finishMatch = async (req: Request, res: Response) => {
+    const update = await this.service.finishMatch(req.params.id);
+    return res.status(200).json({ message: update });
+  };
+
+  updateMatch = async (req: Request, res: Response) => {
+    const update = await this.service.updateMatch(req.params.id, req.body);
+    return res.status(200).json({ message: update });
+  };
 }
