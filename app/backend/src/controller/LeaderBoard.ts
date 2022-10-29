@@ -17,4 +17,9 @@ export default class LeaderBoard {
     const matchs = await this.leaderBoards.leaderBoardAway();
     return res.status(200).json(matchs);
   };
+
+  leaderBoard = async (req: Request, res: Response) => {
+    const matchs = await this.leaderBoards.leaderBoard();
+    return res.status(200).json(matchs);
+  };
 }

@@ -117,4 +117,37 @@ export default class LeaderBoard {
     const ordinateList = this.ordenate(listData);
     return ordinateList;
   };
+
+  generateObjFull = (team: any, list: any) => {
+    const obj = {
+      name: team.teamName,
+      totalPoints: list[0].totalPoints + list[1].totalPoints,
+      totalGames: list[0].totalGames + list[1].totalGames,
+      totalVictories: list[0].totalVictories + list[1].totalVictories,
+      totalDraws: list[0].totalDraws + list[1].totalDraws,
+      totalLosses: list[0].totalLosses + list[1].totalLosses,
+      goalsFavor: list[0].goalsFavor + list[1].goalsFavor,
+      goalsOwn: list[0].goalsOwn + list[1].goalsOwn,
+      goalsBalance: list[0].goalsBalance + list[1].goalsBalance,
+    };
+    return obj;
+  };
+
+  leaderBoard = async () => {
+    const teams: any = await TeamsModel.findAll();
+    const value1 = await this.leaderBoardAway();
+    const value2 = await this.leaderBoardHome();
+    const valor = [...value1, ...value2];
+    const listData = await Promise.all(
+      teams.map(async (team: any) => {
+        const list = valor.filter((item) => team.teamName === item.name);
+        const obj = this.generateObjFull(team, list);
+        const efficiency = ((obj.totalPoints * 100) / (obj.totalGames * 3)).toFixed(2);
+        const final = { ...obj, efficiency };
+        return final;
+      }),
+    );
+    const ordinateList = this.ordenate(listData);
+    return ordinateList;
+  };
 }
