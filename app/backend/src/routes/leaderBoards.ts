@@ -5,6 +5,7 @@ const router = express.Router();
 
 const leaderBoardControl = new LeaderBoard();
 
-router.get('/', leaderBoardControl.leaderBoardHome);
+router.get('/home', leaderBoardControl.leaderBoardHome);
+router.get('/away', leaderBoardControl.leaderBoardAway);
 
 export default router;

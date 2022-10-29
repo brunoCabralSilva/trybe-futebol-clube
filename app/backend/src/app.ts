@@ -2,7 +2,7 @@ import * as express from 'express';
 import login from './routes/login';
 import teams from './routes/teams';
 import matches from './routes/matches';
-import leaderBoardsHm from './routes/leaderBoardsHm';
+import leaderBoardsHm from './routes/leaderBoards';
 
 class App {
   public app: express.Express;
@@ -14,7 +14,7 @@ class App {
     this.app.use('/login', login);
     this.app.use('/teams', teams);
     this.app.use('/matches', matches);
-    this.app.use('/leaderboard/home', leaderBoardsHm);
+    this.app.use('/leaderboard', leaderBoardsHm);
   }
 
   private config():void {

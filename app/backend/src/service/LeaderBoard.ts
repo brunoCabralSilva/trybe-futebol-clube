@@ -10,7 +10,7 @@ export default class LeaderBoard {
     this.teamsModel = new TeamsModel();
   }
 
-  calculateStatistics = (list: any) => {
+  calcStatisticsHome = (list: any) => {
     const data = { totalPoints: 0, totalVictories: 0, totalDraws: 0 };
     const data2 = { totalLosses: 0, goalsFavor: 0, goalsOwn: 0 };
     const data3 = { goalsBalance: 0 };
@@ -19,6 +19,27 @@ export default class LeaderBoard {
       data2.goalsOwn += match.awayTeamGoals;
       data3.goalsBalance += match.homeTeamGoals - match.awayTeamGoals;
       if (match.homeTeamGoals > match.awayTeamGoals) {
+        data.totalPoints += 3;
+        data.totalVictories += 1;
+      } else if (match.homeTeamGoals === match.awayTeamGoals) {
+        data.totalPoints += 1;
+        data.totalDraws += 1;
+      } else {
+        data2.totalLosses += 1;
+      }
+    });
+    return { ...data, ...data2, ...data3 };
+  };
+
+  calcStatisticsAway = (list: any) => {
+    const data = { totalPoints: 0, totalVictories: 0, totalDraws: 0 };
+    const data2 = { totalLosses: 0, goalsFavor: 0, goalsOwn: 0 };
+    const data3 = { goalsBalance: 0 };
+    list.forEach((match: any) => {
+      data2.goalsFavor += match.awayTeamGoals;
+      data2.goalsOwn += match.homeTeamGoals;
+      data3.goalsBalance += match.awayTeamGoals - match.homeTeamGoals;
+      if (match.awayTeamGoals > match.homeTeamGoals) {
         data.totalPoints += 3;
         data.totalVictories += 1;
       } else if (match.homeTeamGoals === match.awayTeamGoals) {
@@ -66,7 +87,26 @@ export default class LeaderBoard {
         const matchs: any = await MatchesModel.findAll({
           where: { homeTeam: team.id, inProgress: false },
         });
-        const statistics = this.calculateStatistics(matchs);
+        const statistics = this.calcStatisticsHome(matchs);
+        const calcEfficiency = ((statistics.totalPoints * 100) / (matchs.length * 3)).toFixed(2);
+        const efficiency = `${calcEfficiency}`;
+        const parameters = { index, matchs, teams, statistics, efficiency };
+        const generate = this.generateObject(parameters);
+        return generate;
+      }),
+    );
+    const ordinateList = this.ordenate(listData);
+    return ordinateList;
+  };
+
+  leaderBoardAway = async () => {
+    const teams: any = await TeamsModel.findAll();
+    const listData = await Promise.all(
+      teams.map(async (team: any, index: number) => {
+        const matchs: any = await MatchesModel.findAll({
+          where: { awayTeam: team.id, inProgress: false },
+        });
+        const statistics = this.calcStatisticsAway(matchs);
         const calcEfficiency = ((statistics.totalPoints * 100) / (matchs.length * 3)).toFixed(2);
         const efficiency = `${calcEfficiency}`;
         const parameters = { index, matchs, teams, statistics, efficiency };
