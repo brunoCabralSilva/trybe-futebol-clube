@@ -7,6 +7,7 @@ export default class Login {
   public findUser = async (body: LoginInterface) => {
     const { email, password } = body;
     const user = await UserModel.findOne({ where: { email } });
+    console.log(user);
     if (user) {
       const value = bcrypt.compareSync(password, user.password);
       if (value) {
